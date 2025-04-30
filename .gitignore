@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Python
+*.pyc
+__pycache__/
+.venv/
+
+# Django
+db.sqlite3
+media/
+home_images/
+
+# Node.js
+node_modules/
+package-lock.json
+package.json
+
+# IDEs
+.vscode/
+.idea/
