@@ -1,0 +1,45 @@
+
+### Login to get token
+### Create a new home listing
+POST http://127.0.0.1:8000/homes/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1MTI1NDI1LCJpYXQiOjE3NDUxMjUxMjUsImp0aSI6ImE3YWZhYmY3ZjJlNjQwOWNiZjQwZjc4MTcwZjY4YjczIiwidXNlcl9pZCI6Mn0.2eUDRs-_vGPbaJDEPPxf52AVSQqy-oWD6N-eC-fZyjc
+
+{
+  "title": "api http from vscode",
+  "description": "api http from vscode test",
+  "price": 300000,
+  "location": "Ensenada, Baja California",
+  "bedrooms": 2,
+  "bathrooms": 1,
+  "sqfoot": 200,
+  "images": null
+}
+
+
+##enviar request para crear otro 
+POST http://127.0.0.1:8000/homes/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1MTIzMzE2LCJpYXQiOjE3NDUxMjMwMTYsImp0aSI6IjlhMGU0N2Y1NjAxYjQ0NmI4YmY3NzdkYWEyOWE5MTAzIiwidXNlcl9pZCI6MX0.Ypw2nYQnoOhAf2t3WFr3cVVeGAXIBMfsTTKOCP-ywac
+
+ {
+            "id": 5,
+            "title": "api http from vscode ",
+            "description": "api http from vscode test",
+            "price": 300000,
+            "location": "Ensenada, Baja California",
+            "bedrooms": 2,
+            "bathrooms": 1,
+            "sqfoot": 200,
+            "images": null
+}
+
+
+###new 
+POST http://127.0.0.1:8000/api/token/
+Content-Type: application/json
+
+{
+    "username": "admin2",
+    "password": "password2025!"
+}
