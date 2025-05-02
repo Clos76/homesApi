@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Dashboard from './pages/Dashboard';
 import AdminPanel from './pages/AdminPanel';
+import HomePage from './pages/homePage';
 
 
 function App() {
@@ -20,12 +21,14 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Homelist />} />
+        <Route path="/" element={<HomePage/>} /> {/* On startup APP if logged in */}
         <Route path="/login" element={<Login onLogin={()=> setIsLoggedIn(true)} />} /> {/* Pass setIsLoggedIn to Login */}
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Login onLogin={() => setIsLoggedIn (true)} />} /> {/* Protect dashboard route */}
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/add-home" element={<AddHomeForm />} />
+        <Route path="/homes" element = {<Homelist/>}/>
+        <Route path ="/" />
       </Routes>
     </Router>
   );

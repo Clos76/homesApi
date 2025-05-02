@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState("");
@@ -17,15 +18,13 @@ const Login = ({ onLogin }) => {
         password,
       });
 
-      console.log(res.data); // Token para log
-
       const { access, refresh } = res.data;
       localStorage.setItem("access", access);
       localStorage.setItem("refresh", refresh);
 
       setError("");
-      onLogin(); // poner a  isLoggedIn a true para que este ingresado
-      navigate("/dashboard"); //redirectionar al dashboard
+      onLogin();
+      navigate("/dashboard");
     } catch (err) {
       console.error("Login failed:", err);
       setError("Invalid username or password");
@@ -33,43 +32,47 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-  <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-sm">
-    <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Login to Your Account</h2>
-    
-    {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+    <div className="container vh-100 d-flex justify-content-center align-items-center bg-light">
+      <div className="card shadow-sm p-4" style={{ maxWidth: "400px", width: "100%" }}>
+        <h2 className="text-center mb-4 text-primary">Login to Your Account</h2>
 
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        type="text"
-        placeholder="Username"
-        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
+        {error && <div className="alert alert-danger text-center">{error}</div>}
 
-      <input
-        type="password"
-        placeholder="Password"
-        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              type="text"
+              placeholder="Username"
+              className="form-control"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
 
-      <button
-        type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition duration-200"
-      >
-        Login
-      </button>
-    </form>
+          <div className="mb-3">
+            <input
+              type="password"
+              placeholder="Password"
+              className="form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-    <p className="text-sm text-center text-gray-500 mt-4">
-      Don’t have an account? <a href="/signup" className="text-blue-600 hover:underline">Sign up</a>
-    </p>
-  </div>
-</div>
+          <div className="d-grid">
+            <button type="submit" className="btn btn-primary">
+              Login
+            </button>
+          </div>
+        </form>
 
+        <p className="text-center text-muted mt-3 mb-0">
+          Don’t have an account? <a href="/signup" className="text-decoration-none">Sign up</a>
+        </p>
+      </div>
+    </div>
   );
 };
 
