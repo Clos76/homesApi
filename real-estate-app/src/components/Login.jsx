@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -7,10 +7,36 @@ const Login = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [attempts, setAttempts] = useState(0);
+  const [blockedUntil, setBlockedUntil] = useState(null);
   const navigate = useNavigate();
+
+  const MAX_ATTEMPTS = 5;
+  const BLOCK_DURATION_MS = 60 * 1000; // 1 minute
+
+  const isBlocked = blockedUntil && Date.now() < blockedUntil;
+
+  // Reset block when time passes
+  useEffect(() => {
+    if (!blockedUntil) return;
+    const interval = setInterval(() => {
+      if (Date.now() >= blockedUntil) {
+        setBlockedUntil(null);
+        setAttempts(0);
+        setError("");
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [blockedUntil]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (isBlocked) {
+      const secondsLeft = Math.ceil((blockedUntil - Date.now()) / 1000);
+      setError(`Too many attempts. Try again in ${secondsLeft} seconds.`);
+      return;
+    }
 
     try {
       const res = await axios.post("http://localhost:8000/api/token/", {
@@ -22,12 +48,23 @@ const Login = ({ onLogin }) => {
       localStorage.setItem("access", access);
       localStorage.setItem("refresh", refresh);
 
+      setAttempts(0);
+      setBlockedUntil(null);
       setError("");
       onLogin();
       navigate("/dashboard");
     } catch (err) {
       console.error("Login failed:", err);
-      setError("Invalid username or password");
+
+      const newAttempts = attempts + 1;
+      setAttempts(newAttempts);
+
+      if (newAttempts >= MAX_ATTEMPTS) {
+        setBlockedUntil(Date.now() + BLOCK_DURATION_MS);
+        setError("Too many failed attempts. You are temporarily blocked for 1 minute.");
+      } else {
+        setError(`Invalid credentials. Attempt ${newAttempts} of ${MAX_ATTEMPTS}.`);
+      }
     }
   };
 
@@ -47,6 +84,7 @@ const Login = ({ onLogin }) => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+              disabled={isBlocked}
             />
           </div>
 
@@ -58,11 +96,12 @@ const Login = ({ onLogin }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={isBlocked}
             />
           </div>
 
           <div className="d-grid">
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary" disabled={isBlocked}>
               Login
             </button>
           </div>

@@ -2,6 +2,11 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .models import Home
 from .serializers import HomeSerializer
+from django_ratelimit.decorators import ratelimit
+from django.contrib.auth import authenticate
+
+
+#from ratelimit.decorators import ratelimit
 
 # DRF imports
 from rest_framework.decorators import api_view, permission_classes
@@ -130,13 +135,17 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
+
+
 @api_view(['POST'])
 @permission_classes([AllowAny]) #para poder acceder a post por todos para crear un usuario
-
+@ratelimit(key='ip', rate='5/m',block=True) # se blocquea despues de 5 intentos por ip
 def register_user(request):
     username = request.data.get('username')
     password = request.data.get('password')
     email = request.data.get('email')
+
+    
 
     # Optional: Add basic validation
     if not username or not password or not email:
@@ -150,3 +159,5 @@ def register_user(request):
         return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
