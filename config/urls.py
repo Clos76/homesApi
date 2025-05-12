@@ -5,7 +5,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from homes.views import register_user
+from homes.views import register_user, update_home_view
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -20,6 +21,8 @@ urlpatterns = [
     path('api/register/', register_user, name='register'),
 
     path('api/', include('users.urls')),
+
+    path('update-home/', update_home_view, name='update-home'),
 ]
 
 # Add static files handling only in development

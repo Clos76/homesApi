@@ -1,7 +1,10 @@
 from cryptography.fernet import Fernet
+from decouple import config
+
+
 
 #clave secreta (guardarla segurn, )
-KEY = b'ffhua31TSDAEhKGJDottSMtBeux6aR0bUwLWdYHNT2w='
+KEY = config("FERNET_KEY") #leer de .env
 
 fernet = Fernet(KEY)
 

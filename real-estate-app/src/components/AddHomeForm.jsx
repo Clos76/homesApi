@@ -64,7 +64,7 @@ const AddHomeForm = () => {
   return (
     <div className="container d-flex align-items-center justify-content-center min-vh-100">
       <div className="card shadow p-4 w-100" style={{ maxWidth: "500px" }}>
-        <h2 className="text-center mb-4">Add a New Home</h2>
+        <h1 className="text-center mb-4">Add a New Home</h1>
 
         {error && <div className="alert alert-danger text-center">{error}</div>}
 
@@ -153,4 +153,7 @@ const AddHomeForm = () => {
   );
 };
 
+// export default AddHomeForm;
 export default AddHomeForm;
+
+

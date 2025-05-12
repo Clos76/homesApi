@@ -161,3 +161,39 @@ def register_user(request):
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# views.py
+from django.http import HttpResponse, HttpResponseForbidden
+from django.utils import timezone
+import logging
+
+audit_logger = logging.getLogger('audit')
+
+def update_home_view(request):
+    ip = request.META.get("REMOTE_ADDR")  # Get IP once
+    if not request.user.is_authenticated:
+        audit_logger.info(f'Unauthorized access attempt from IP {ip}')
+        return HttpResponseForbidden("You must be logged in to access this page.")
+    
+    if request.method == 'POST':
+        # Simulate a critical data update
+        audit_logger.info(f'User {request.user} updated a home listing at {timezone.now()} from IP {ip}')
+        return HttpResponse("Home listing updated successfully.")
+    
+    # Log all GET requests to this endpoint
+    audit_logger.info(f'User {request.user} made GET request to update-home at {timezone.now()} from IP {ip}')
+    return HttpResponse("Send a POST request to update.")
+
+
+# class CustomTokenObtainPairView(TokenObtainPairView):
+#     def post(self, request, *args, **kwargs):
+#         response = super().post(request, *args, **kwargs)
+#         username = request.data.get('username')
+#         ip = request.META.get('REMOTE_ADDR')
+#         audit_logger.info(f'Intento de inicio de sesión para {username} desde IP {ip}')
+
+#         if response.status_code == 200:
+#             audit_logger.info(f'Inicio de sesión exitoso para {username} desde IP {ip}')
+#         else:
+#             audit_logger.warning(f'Intento de inicio de sesión fallido para {username} desde IP {ip}')
+
+#         return response

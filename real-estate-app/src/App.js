@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'; //para login con localStorage
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import Homelist from './components/HomeList';
 import AddHomeForm from './components/AddHomeForm';
 import Login from './components/Login';
@@ -8,27 +9,24 @@ import Dashboard from './pages/Dashboard';
 import AdminPanel from './pages/AdminPanel';
 import HomePage from './pages/homePage';
 
-
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  //auto login si el token ya esta en localstorag
-  useEffect(()=>{
+  useEffect(() => {
     const token = localStorage.getItem("access");
-    if(token) setIsLoggedIn(true);
-  },[] ) ;
+    if (token) setIsLoggedIn(true);
+  }, []);
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage/>} /> {/* On startup APP if logged in */}
-        <Route path="/login" element={<Login onLogin={()=> setIsLoggedIn(true)} />} /> {/* Pass setIsLoggedIn to Login */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<Login onLogin={() => setIsLoggedIn(true)} />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Login onLogin={() => setIsLoggedIn (true)} />} /> {/* Protect dashboard route */}
+        <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Login onLogin={() => setIsLoggedIn(true)} />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/add-home" element={<AddHomeForm />} />
-        <Route path="/homes" element = {<Homelist/>}/>
-        <Route path ="/" />
+        <Route path="/homes" element={<Homelist />} />
       </Routes>
     </Router>
   );

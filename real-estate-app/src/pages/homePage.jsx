@@ -12,21 +12,22 @@ const HomePage = () => {
         <div>
             {/* Header */}
             <header className="bg-primary text-white p-4 text-center">
-                <h1>Rosarito Real Estate</h1>
+            <h1>Welcome to the HomePage</h1>
+
                 <p>Find your dream beachfront home</p>
 
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Active</a>
+                <ul className="nav nav-tabs">
+                    <li className="nav-item">
+                        <a className="nav-link active" aria-current="page" href="#">Active</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/signup">Signup</a>
+                    <li className="nav-item">
+                        <a className="nav-link text-white" href="/signup">Signup</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/login">Login</a>
+                    <li className="nav-item">
+                        <a className="nav-link text-white" href="/login">Login</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href='/dashboard'>Dashboard</a>
+                    <li className="nav-item">
+                        <a className="nav-link text-white" href='/dashboard'>Dashboard</a>
                     </li>
                 </ul>
             </header>
@@ -58,3 +59,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
